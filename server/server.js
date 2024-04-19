@@ -24,10 +24,24 @@ server.addService(simpleProto.example.simple_crud.rpc.SimpleCrudService.service,
   create: simpleServiceCtl.create,
 });
 
-server.bind(`${process.env.GRPC_HOST}:${process.env.GRPC_PORT}`, grpc.ServerCredentials.createInsecure());
-server.start();
 
-if (server.started) {
-  dbHelper.init();
-  console.log(`listening to port ${process.env.GRPC_PORT}, host ${process.env.GRPC_HOST}, date: ${new Date()}`);
-}
+server.bindAsync(
+  `${process.env.GRPC_HOST}:${process.env.GRPC_PORT}`,
+  grpc.ServerCredentials.createInsecure(),
+  (err, port) => {
+    if (err) {
+      console.error(`Server bind failed: ${err}`);
+    } else {
+      console.log(`Server listening on ${process.env.GRPC_HOST}:${process.env.GRPC_PORT}`);
+      // Start the server once it's bound
+      server.start();
+      if (server.started) {
+        dbHelper.init();
+        console.log(`listening to port ${process.env.GRPC_PORT}, host ${process.env.GRPC_HOST}, date: ${new Date()}`);
+      }
+      
+    }
+  });
+
+
+
