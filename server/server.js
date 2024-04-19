@@ -22,6 +22,8 @@ const simpleProto = grpc.loadPackageDefinition(packageDefinition);
 const simpleServiceCtl = require('./modules/simple_crud');
 server.addService(simpleProto.example.simple_crud.rpc.SimpleCrudService.service, {
   create: simpleServiceCtl.create,
+  update:simpleServiceCtl.update
+
 });
 
 

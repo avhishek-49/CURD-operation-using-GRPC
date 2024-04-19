@@ -45,3 +45,4 @@ message Details {
 message GetRequest {
     int32 id = 1;
 }
+
